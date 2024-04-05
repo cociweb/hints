@@ -1,0 +1,8 @@
+hassil>=1.7.0
+jamspell>=0.0.12
+progress>=1.6
+wyoming>=1.5.3
+faster-whisper>=1.0.1
+
+
+#apt swig4, git, cmake
