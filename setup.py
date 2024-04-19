@@ -33,6 +33,7 @@ if requirements_path.is_file():
 
 data_files = []
 
+
 module_dir =  DIR
 module_version = all[0]
 module_name = all[1]
@@ -43,6 +44,10 @@ module_license = all[5]
 module_url = all[6]
 module_package = all[7]
 print(module_name)
+
+module_dir = DIR / module_name
+version_path = module_dir / "VERSION"
+data_files.append(version_path)
 
 # -----------------------------------------------------------------------------
 
