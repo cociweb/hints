@@ -30,6 +30,7 @@ if requirements_path.is_file():
         spec.loader.exec_module(module)
         all = module.__all__
         print(all)
+        print(requirements)
 
 data_files = []
 
@@ -43,6 +44,9 @@ module_email = all[4]
 module_license = all[5]
 module_url = all[6]
 module_package = all[7]
+
+with open("README.md", "r") as fh:
+    module_long_description = fh.read()
 print(module_name)
 
 module_dir = DIR / module_name
@@ -51,10 +55,12 @@ data_files.append(version_path)
 
 # -----------------------------------------------------------------------------
 
-setup(
+setuptools.setup(
     name=module_name,
     version=module_version,
     description=module_description,
+    long_description=module_long_description,
+    long_description_content_type="text/markdown",
     url=module_url,
     author=module_author,
     author_email=module_email,

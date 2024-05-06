@@ -1,2 +1,4 @@
-# hints
-source code for hints python library
+# HINTS: Home-assistant INtent Text Spell-checker
+
+
+

@@ -21,6 +21,7 @@ def core_args():
     )
     parser.add_argument(
         "--proto",
+        required=True,
         default="tcp://0.0.0.0:10300",
         help="unix:// or tcp://"
     )

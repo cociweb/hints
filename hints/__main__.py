@@ -121,7 +121,7 @@ async def main() -> None:
             _LOGGER.error("local-files-only and force-download-model are mutually exclusive!")
             exit(1)
         elif args.force_download_model:
-             purge_model_dir = True
+            purge_model_dir = True
         elif args.local_files_only:
             purge_model_dir = False
 
