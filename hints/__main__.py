@@ -89,6 +89,24 @@ async def main() -> None:
 
     ##TODO: model checking!
 
+
+    data_dir: Optional[Path] = None
+    model_dir: Optional[Path] = None
+
+    data_dir=Path(args.data_dir)
+    model_dir=Path(args.model_dir)
+
+
+    purge_model_dir: bool = False
+
+    if args.local_files_only and args.force_download_model:
+        _LOGGER.error("local-files-only and force-download-model are mutually exclusive!")
+        exit(1)
+    elif args.force_download_model:
+        purge_model_dir = True
+    elif args.local_files_only:
+        purge_model_dir = False
+
     if args.spellcheck:
         if args.language is None or args.language.lower() == 'en':
             # Whisper does not understand "auto"
@@ -99,32 +117,17 @@ async def main() -> None:
             args.tag = 'latest'
 
 
-        data_dir: Optional[Path] = None
+
         intent_dir: Optional[Path] = None
         jamspell_dir: Optional[Path] = None
         alphabet_dir: Optional[Path] = None
         model_dir: Optional[Path] = None
 
-        data_dir=Path(args.data_dir)
+
         intent_suffix = Path(f"intent_{args.language}")
         intent_dir = Path(os.path.join(data_dir, intent_suffix))
         jamspell_dir = Path(f"{data_dir}/jamspell")
         alphabet_dir = Path(f"{data_dir}/alphabet")
-        model_dir=Path(args.model_dir)
-
-        #custom_dir: Optional[Path] = Path(args.custom_dir[0]) or Path("language")
-        #alphabet_dir: Path = Path(custom_dir)
-
-        purge_model_dir: bool = False
-
-        if args.local_files_only and args.force_download_model:
-            _LOGGER.error("local-files-only and force-download-model are mutually exclusive!")
-            exit(1)
-        elif args.force_download_model:
-            purge_model_dir = True
-        elif args.local_files_only:
-            purge_model_dir = False
-
 
 
         folders = [data_dir, intent_dir, jamspell_dir, alphabet_dir, model_dir]

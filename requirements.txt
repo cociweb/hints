@@ -1,5 +1,5 @@
 hassil>=1.7.0
-jamspell @ git+https://github.com/bakwc/JamSpell@main
+jamspell @ git+https://github.com/bakwc/JamSpell@master
 progress>=1.6
 wyoming>=1.5.3
-faster-whisper>=1.0.1
+faster-whisper>=1.0.2
