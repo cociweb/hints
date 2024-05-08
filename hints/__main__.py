@@ -154,7 +154,7 @@ async def main() -> None:
         else:
             generate_alphabet(language, alphabet_dir, alphabet)
 
-        get_intents(language, args.tag, data_dir)
+        get_intents(language, args.tag, data_dir, args.timeout)
 
 
         intent_file = Path(f"{intent_dir}/merged_intents.txt")
@@ -199,7 +199,8 @@ async def main() -> None:
             _LOGGER.info("Downloading custom model from %s", args.custom_model_url)
             if not args.custom_model_url.endswith("/"):
                 args.custom_model_url += "/"
-            download_custom_model(args.custom_model_url.strip(), model_dir, purge_model_dir)
+            download_custom_model(args.custom_model_url.strip(), model_dir, purge_model_dir, args.timeout)
+            w_args.local_files_only = True
         elif not purge_model_dir:
             args.model = str(model_dir / "custom")
         elif args.custom_model_url.count("/") == 1:
@@ -214,8 +215,10 @@ async def main() -> None:
         model_size = match.group(1)
         model_name = f"{model_size}-int8"
         args.model = f"rhasspy/faster-whisper-{model_name}"
+    else:
+        w_args.model_size_or_path=args.model
+        model_name=args.model
 
-    w_args.model_size_or_path=args.model
 
     if args.language == "auto":
         # Whisper does not understand "auto"
@@ -256,6 +259,7 @@ async def main() -> None:
         download_root=str(model_dir),
         device=w_args.device,
         compute_type=w_args.compute_type,
+        local_files_only=w_args.local_files_only,
     )
     server = AsyncServer.from_uri(args.proto)
     _LOGGER.info("Ready")

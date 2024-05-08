@@ -34,6 +34,10 @@ def core_args():
         "--custom-model-url",
         help="Full URL (with https:// prefix) of a remote directory or Huggingface repository(author/repo) or a single folder in the model-dir. In the remote directory model.bin, vocabulary.txt, config.json, are required!",
     )
+    parser.add_argument(
+        "--timeout",
+        help="Set timeout for the download activity. Default is 30 seconds",
+    )
 
 
 # -----------------------------------------------------------------------------
@@ -190,8 +194,10 @@ def whisper_args():
                         help='the initial timestamp cannot be later than this')
     parser.add_argument('--hallucination_silence_threshold', type=float, default=None,
                         help='threshold for hallucination detection')
+    parser.add_argument('--hotwords', type=str, default=None,
+                        help='Hotwords for the model')
     parser.add_argument('--language_detection_threshold', type=float, default=None,
-                    help='threshold for language detection')
+                        help='threshold for language detection')
     parser.add_argument('--language_detection_segments', type=int,
                         default=1, help='Maximum number of segments for language detection')
     parser.add_argument('--vad_parameters', type=json.loads, default=json.dumps({
@@ -201,8 +207,8 @@ def whisper_args():
                         "min_silence_duration_ms": 2000,
                         "window_size_samples": 1024,
                         "speech_pad_ms": 400
-                    }), help='The VAD parameters as a JSON string')
-
+                        }),
+                        help='The VAD parameters as a JSON string')
     # WhisperModel params
     parser.add_argument('--model_size_or_path', type=str, default='base',
                         help='Size of the model to use (tiny, tiny.en, base, base.en, small, small.en, medium, medium.en, large-v1, or large-v2) or a path to a converted model directory. When a size is configured, the converted model is downloaded from the Hugging Face Hub.')

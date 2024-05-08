@@ -69,17 +69,17 @@ def get_intents_version(tag: str):
 
     return url, url_latest
 
-def download_intents(url: str, url_latest: str):
+def download_intents(url: str, url_latest: str, timeout: int = None):
 
     try:
         # Download the source code tarball
-        response = urlopen(url)
+        response = urlopen(url, timeout=timeout)
 
     except urllib.error.HTTPError as e:
         if e.code == 404:
             # If the primary URL returns a 404 error, try the backup URL
             try:
-                response = urlopen(url_latest)
+                response = urlopen(url_latest, timeout=timeout)
             except urllib.error.HTTPError as e:
                 _LOGGER.warning("Failed to download from both URLs: %s", e )
         else:
@@ -96,7 +96,7 @@ def safe_extract(tarinfo, path):
     # If it's not safe (e.g., path traversal, symlink etc.), return None.
     return tarinfo
 
-def get_intents(language: str, tag: str, dest_dir: Union[str, Path]):
+def get_intents(language: str, tag: str, dest_dir: Union[str, Path], timeout: int = None):
     """
     Returns directory of downloaded intent.
     """
@@ -122,7 +122,7 @@ def get_intents(language: str, tag: str, dest_dir: Union[str, Path]):
 
         url, url_latest = get_intents_version(tag)
 
-        response = download_intents(url, url_latest)
+        response = download_intents(url, url_latest, timeout=timeout)
 
 
         total_size = int(response.headers.get('content-length', 0))

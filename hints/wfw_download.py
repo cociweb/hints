@@ -6,7 +6,7 @@ import shutil
 from progress.bar import Bar
 
 _LOGGER = logging.getLogger(__name__)
-def download_custom_model(model_url_prefix: str, dest_dir: Path, purge: bool = False) -> bool:
+def download_custom_model(model_url_prefix: str, dest_dir: Path, purge: bool = False, timeout: int = None) -> bool:
     """
     Downloads custom model files: model.bin, vocabulary.txt, config.json and hash.json directly to destination directory.
 
@@ -35,7 +35,7 @@ def download_custom_model(model_url_prefix: str, dest_dir: Path, purge: bool = F
         model_url = model_url_prefix + fname
         _LOGGER.info("%s", model_url)
         try:
-            with urlopen(model_url) as d, open(model_dir / fname, "wb") as savefile:
+            with urlopen(model_url, timeout=timeout) as d, open(model_dir / fname, "wb") as savefile:
                 data = d.read()
                 bar = Bar('Downloading ' + fname, max=len(data), fill='#', suffix='%(percent).1f%% - %(elapsed_td)s')
                 for i in range(len(data)):
