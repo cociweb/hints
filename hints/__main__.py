@@ -4,6 +4,7 @@ import asyncio
 import logging
 import os
 import shutil
+import sys
 from pathlib import Path
 from typing import Optional
 
@@ -289,8 +290,12 @@ async def main() -> None:
 # -----------------------------------------------------------------------------
 
 def run() -> None:
-    asyncio.run(main())
+    try:
 
+        asyncio.run(main())
+    except Exception as e:
+        print(f"An error occurred: {e}", file=sys.stderr)
+        sys.exit(1)
 
 if __name__ == "__main__":
     try:

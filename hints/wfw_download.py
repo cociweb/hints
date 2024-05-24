@@ -47,13 +47,22 @@ def download_custom_model(model_url_prefix: str, dest_dir: Path, purge: bool = F
         except Exception as e:
             _LOGGER.warning("Download failed on  %s from %s! Info: %s", fname, model_url, e)
 
+        try:
+            chmod_files(model_dir, fname)
+        except Exception as e:
+            _LOGGER.warning("Failed to chmod file: %s. Info: %s", fname, e)
+
     if check_files(model_dir, filelist):
         result = True
 
     return result
 
 def check_files(model_dir, filelist):
-    for fname in filelist:
-        if not os.path.isfile(os.path.join(model_dir, fname)):
+    for filename in filelist:
+        if not os.path.isfile(os.path.join(model_dir, filename)):
             return False
     return True
+
+def chmod_files(model_dir, filelist):
+    for fname in filelist:
+        os.chmod(os.path.join(model_dir, fname), 0o755)

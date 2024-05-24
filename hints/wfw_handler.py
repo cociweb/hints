@@ -34,6 +34,10 @@ class FasterWhisperEventHandler(AsyncEventHandler):
     ) -> None:
         super().__init__(*args, **kwargs)
 
+        if not isinstance(cli_args, argparse.Namespace):
+            cli_args = argparse.Namespace(**cli_args, spellcheck=False)
+
+
         self.cli_args = cli_args
         self.wyoming_info_event = wyoming_info.event()
         self.model = model
@@ -41,8 +45,14 @@ class FasterWhisperEventHandler(AsyncEventHandler):
         self._wav_dir = tempfile.TemporaryDirectory()
         self._wav_path = os.path.join(self._wav_dir.name, "speech.wav")
         self._wav_file: Optional[wave.Wave_write] = None
-        self.spellcheck = args.spellcheck
-        self.jamspell_model_file = args.jamspell_model_file
+        if not hasattr(cli_args, 'spellcheck'):
+            setattr(cli_args, 'spellcheck', False)
+        self.spellcheck = cli_args.spellcheck
+        if hasattr(cli_args, 'jamspell_model_file'):
+            self.jamspell_model_file = cli_args.jamspell_model_file
+        else:
+            self.jamspell_model_file = None  # or any default value you want to use
+
 
     async def handle_event(self, event: Event) -> bool:
         if AudioChunk.is_type(event.type):

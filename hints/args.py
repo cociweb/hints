@@ -28,6 +28,7 @@ def core_args():
     parser.add_argument(
         "--local-files-only",
         action="store_true",
+        default=False,
         help="faster-whisper: If True, avoid downloading the file and return the path to the local cached file if it exists."
     )
     parser.add_argument(
@@ -56,6 +57,7 @@ def core_args():
     parser.add_argument(
         "--spellcheck",
         action="store_true",
+        default=False,
         help="Default alphabet for spell-checking",
     )
     parser.add_argument(
@@ -65,6 +67,7 @@ def core_args():
     parser.add_argument(
         "--debug",
         action="store_true",
+        default=False,
         help="Log DEBUG messages"
     )
     parser.add_argument(
@@ -88,16 +91,19 @@ def core_args():
     parser.add_argument(
         "--force-generate-intent",
         action="store_true",
+        default=False,
         help="Force to initialize the data structure"
     )
     parser.add_argument(
         "--force-generate-spellcheck",
         action="store_true",
+        default=False,
         help="Force to initialize the data structure"
     )
     parser.add_argument(
         "--force-download-model",
         action="store_true",
+        default=False,
         help="Force to initialize the model structure"
     )
     parser.add_argument(
